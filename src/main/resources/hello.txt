@@ -1,0 +1,6 @@
+hello flink
+hello word
+hello scala
+how are you
+fine thank you
+and you
