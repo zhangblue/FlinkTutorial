@@ -1,5 +1,9 @@
 # Flink Demo
 
+工程使用
+- JDK 1.8 
+- Scala 2.11.12
+
 ## 1. Word Count
 ### 1.1 批处理
 ```scala
