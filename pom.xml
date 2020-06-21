@@ -12,13 +12,26 @@
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-scala_2.11</artifactId>
-      <version>1.7.2</version>
+      <version>1.10.1</version>
     </dependency>
 
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-streaming-scala_2.11</artifactId>
-      <version>1.7.2</version>
+      <version>1.10.1</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-clients_2.11</artifactId>
+      <version>1.10.1</version>
+    </dependency>
+
+    <!--引入kafka读取-->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-kafka-0.11_2.11</artifactId>
+      <version>1.10.1</version>
     </dependency>
   </dependencies>
 
@@ -100,7 +113,7 @@
           <includeProjectDependencies>true</includeProjectDependencies>
           <includePluginDependencies>false</includePluginDependencies>
           <classpathScope>compile</classpathScope>
-<!--          <mainClass>cn.spark.study.App</mainClass>-->
+          <!--          <mainClass>cn.spark.study.App</mainClass>-->
         </configuration>
       </plugin>
     </plugins>
