@@ -74,3 +74,11 @@ object StreamWordCount {
   }
 }
 ```
+
+
+
+## KeyBy
+
+基于key的hash code重分区
+
+同一个key只能在一个分区内处理, 一个分区内可以有不同的key的数据
