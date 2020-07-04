@@ -1,12 +1,10 @@
 package com.zhangblue.api
 
-import java.util.Properties
+
 import java.util.concurrent.TimeUnit
 
-import org.apache.flink.api.common.serialization.SimpleStringSchema
 import org.apache.flink.streaming.api.functions.source.SourceFunction
 import org.apache.flink.streaming.api.scala.{DataStream, _}
-import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011
 
 import scala.util.Random
 

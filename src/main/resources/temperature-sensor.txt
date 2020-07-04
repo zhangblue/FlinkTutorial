@@ -1,0 +1,6 @@
+sensor_1,1547718299,Redis,35.8,北京
+sensor_6,1547718201,Kafka,15.4,广州
+sensor_7,1547718202,Flume,6.7,武汉
+sensor_8,1547718205,Spark,38.1,深圳
+sensor_1,1547718399,Tomcat,32.8,乌鲁木齐
+sensor_1,1547718499,Hadoop,33.8,石家庄
