@@ -56,7 +56,7 @@
     <!--bigdata-->
     <scala.version>2.11</scala.version>
     <!--scala 详细版本-->
-    <scala.detail.version>2.11.8</scala.detail.version>
+    <scala.detail.version>2.13.3</scala.detail.version>
     <!--zookeeper 版本-->
     <zk.client.verion>0.11</zk.client.verion>
     <kafka.version>0.11.0.3</kafka.version>
