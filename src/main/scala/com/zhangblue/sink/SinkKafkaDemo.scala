@@ -2,11 +2,9 @@ package com.zhangblue.sink
 
 import java.util.Properties
 
-import com.alibaba.fastjson.JSONObject
 import com.zhangblue.entity.TemperatureSensor
 import org.apache.flink.api.common.serialization.{DeserializationSchema, SimpleStringSchema}
 import org.apache.flink.streaming.api.scala._
-import org.apache.flink.streaming.connectors.kafka.internal.FlinkKafkaProducer
 import org.apache.flink.streaming.connectors.kafka.{FlinkKafkaConsumer011, FlinkKafkaProducer011}
 
 /**
@@ -21,11 +19,14 @@ object SinkKafkaDemo {
     //需求，求出传感器迄今为止探索到的最高温度的传感器数据
     //1. 环境
     val env = StreamExecutionEnvironment.getExecutionEnvironment
+    //获取类加载器
+    val classLoader = this.getClass.getClassLoader;
+
     //2. 读取kafka源，根据传感器的id进行分组，求每组中最大的温度值，并显示结果
     val topic = "my-topic"
     val valueDeserializationSchema: DeserializationSchema[String] = new SimpleStringSchema()
     val props: Properties = new Properties()
-    props.load(this.getClass.getClassLoader.getResourceAsStream("kafka/localhost-consumer.properties"))
+    props.load(classLoader.getResourceAsStream("kafka/home-consumer.properties"))
     val kafkaSource = env.addSource(new FlinkKafkaConsumer011[String](topic, valueDeserializationSchema, props))
 
     val srcDataStream: DataStream[TemperatureSensor] = kafkaSource.filter(_.trim.nonEmpty).map(fun = lineData => {
@@ -39,21 +40,12 @@ object SinkKafkaDemo {
     }).keyBy("id").maxBy("temperature")
 
 
-    val producerConfig:Properties = new Properties();
-    producerConfig.load(this.getClass.getClassLoader.getResourceAsStream("kafka/localhost-producer.properties"))
+    //将DataStream 输出到Kafka中
+    val producerConfig: Properties = new Properties();
+    producerConfig.load(classLoader.getResourceAsStream("kafka/home-producer.properties"))
     srcDataStream.map(data => data.toString).addSink {
-      sinkFunction = new FlinkKafkaProducer[String]("target-topic", new SimpleStringSchema(), new Properties())
+      new FlinkKafkaProducer011[String]("flink-target-topic", new SimpleStringSchema(), producerConfig)
     }
-
-
-
-
-
-
-
-
-
-
     //3. 启动
     env.execute(this.getClass.getSimpleName)
   }
