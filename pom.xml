@@ -31,7 +31,7 @@
 
     <guava.version>21.0</guava.version>
     <!-- mysql driver-->
-    <mysql.jdbc.version>5.1.44</mysql.jdbc.version>
+    <mysql.jdbc.version>8.0.16</mysql.jdbc.version>
     <!--google缓存操作-->
     <protobuf.version>3.5.1</protobuf.version>
     <!--字符串操作工具类-->
