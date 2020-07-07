@@ -20,7 +20,7 @@
     <!-- 日志框架版本-->
     <logback.version>1.1.8</logback.version>
     <slf4j.version>1.7.22</slf4j.version>
-    <log4j.version>1.2.16</log4j.version>
+    <log4j.version>1.2.17</log4j.version>
 
     <!--json 工具类-->
     <fastjson.version>1.2.70</fastjson.version>
@@ -29,9 +29,9 @@
 
     <lombok.verion>1.18.4</lombok.verion>
 
-    <guava.version>21.0</guava.version>
+    <guava.version>29.0-jre</guava.version>
     <!-- mysql driver-->
-    <mysql.jdbc.version>5.1.44</mysql.jdbc.version>
+    <mysql.jdbc.version>8.0.20</mysql.jdbc.version>
     <!--google缓存操作-->
     <protobuf.version>3.5.1</protobuf.version>
     <!--字符串操作工具类-->
@@ -56,7 +56,7 @@
     <!--bigdata-->
     <scala.version>2.11</scala.version>
     <!--scala 详细版本-->
-    <scala.detail.version>2.11.8</scala.detail.version>
+    <scala.detail.version>2.11.12</scala.detail.version>
     <!--zookeeper 版本-->
     <zk.client.verion>0.11</zk.client.verion>
     <kafka.version>0.11.0.3</kafka.version>
@@ -69,6 +69,8 @@
     <es.version>6.5.3</es.version>
 
     <hdc-core.version>2.2.0</hdc-core.version>
+
+    <netty-all.version>4.1.50.Final</netty-all.version>
 
     <scope>compile</scope>
 
@@ -427,7 +429,7 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-all</artifactId>
-      <version>4.1.16.Final</version>
+      <version>${netty-all.version}</version>
     </dependency>
 
     <dependency>
