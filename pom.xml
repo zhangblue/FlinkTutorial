@@ -72,6 +72,9 @@
 
     <netty-all.version>4.1.50.Final</netty-all.version>
 
+
+    <bahir-redis.version>1.0</bahir-redis.version>
+
     <scope>compile</scope>
 
 
@@ -513,6 +516,14 @@
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-statebackend-rocksdb_${scala.version}</artifactId>
       <version>${flink.version}</version>
+      <scope>${scope}</scope>
+    </dependency>
+
+    <!--flink redis connector-->
+    <dependency>
+      <groupId>org.apache.bahir</groupId>
+      <artifactId>flink-connector-redis_${scala.version}</artifactId>
+      <version>${bahir-redis.version}</version>
       <scope>${scope}</scope>
     </dependency>
 
