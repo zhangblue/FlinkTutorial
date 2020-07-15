@@ -14,19 +14,16 @@ import org.apache.flink.streaming.connectors.redis.common.mapper.{RedisCommand, 
  **/
 object RedisSinkDemo {
   def main(args: Array[String]): Unit = {
-
     val env = StreamExecutionEnvironment.getExecutionEnvironment
 
     env.setParallelism(1)
 
     val inputStream: DataStream[String] = env.readTextFile("src/main/resources/temperature-sensor.txt")
 
-
     val dataStream: DataStream[TemperatureSensor] = inputStream.map(new MyMapFunction())
 
     //定义一个redis 的配置陪
-    val conf: FlinkJedisPoolConfig = new FlinkJedisPoolConfig.Builder().setHost("localhost").setPort(6379).build()
-
+    val conf: FlinkJedisPoolConfig = new FlinkJedisPoolConfig.Builder().setHost("172.16.36.123").setPort(6379).build()
 
     dataStream.addSink(new RedisSink[TemperatureSensor](conf, new MyRedisMapper))
 
@@ -55,5 +52,4 @@ object RedisSinkDemo {
       data.temperature.toString
     }
   }
-
 }

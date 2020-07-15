@@ -31,7 +31,10 @@
 
     <guava.version>29.0-jre</guava.version>
     <!-- mysql driver-->
-    <mysql.jdbc.version>8.0.20</mysql.jdbc.version>
+    <mysql-jdbc.version>8.0.20</mysql-jdbc.version>
+    <!--postgresql driver-->
+    <postgresql-jdbc.version>42.1.4</postgresql-jdbc.version>
+
     <!--google缓存操作-->
     <protobuf.version>3.5.1</protobuf.version>
     <!--字符串操作工具类-->
@@ -74,6 +77,9 @@
 
 
     <bahir-redis.version>1.0</bahir-redis.version>
+
+    <flink-jdbc.version>1.11.0</flink-jdbc.version>
+
 
     <scope>compile</scope>
 
@@ -171,7 +177,7 @@
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>
-      <version>${mysql.jdbc.version}</version>
+      <version>${mysql-jdbc.version}</version>
       <scope>${scope}</scope>
     </dependency>
 
@@ -527,89 +533,73 @@
       <scope>${scope}</scope>
     </dependency>
 
+    <!--flink jdbc connecter-->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-jdbc_${scala.version}</artifactId>
+      <version>${flink-jdbc.version}</version>
+      <scope>${scope}</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql-jdbc.version}</version>
+      <scope>${scope}</scope>
+    </dependency>
+
+    <!--flink elasticsearch -->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-elasticsearch6_${scala.version}</artifactId>
+      <version>${flink.version}</version>
+      <scope>${scope}</scope>
+    </dependency>
+
 
   </dependencies>
 
   <build>
     <plugins>
       <plugin>
-        <groupId>net.alchim31.maven</groupId>
-        <artifactId>scala-maven-plugin</artifactId>
-        <version>3.2.2</version>
-        <executions>
-          <execution>
-            <id>compile-scala</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>add-source</goal>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-          <execution>
-            <id>test-compile-scala</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>add-source</goal>
-              <goal>testCompile</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <scalaVersion>2.11.12</scalaVersion>
-        </configuration>
-      </plugin>
-
-      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.2</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-
-      <plugin>
-        <artifactId>maven-assembly-plugin</artifactId>
-        <configuration>
-          <descriptorRefs>
-            <descriptorRef>jar-with-dependencies</descriptorRef>
-          </descriptorRefs>
-          <archive>
-            <manifest>
-              <mainClass></mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <artifactId>maven-shade-plugin</artifactId>
+        <version>3.1.1</version>
         <executions>
           <execution>
-            <id>make-assembly</id>
             <phase>package</phase>
             <goals>
-              <goal>single</goal>
+              <goal>shade</goal>
             </goals>
+            <configuration>
+              <artifactSet>
+                <excludes>
+                  <exclude>com.google.code.findbugs:jsr305</exclude>
+                  <exclude>org.slf4j:*</exclude>
+                  <exclude>log4j:*</exclude>
+                </excludes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <!-- Do not copy the signatures in the META-INF folder.
+                  Otherwise, this might cause SecurityExceptions when using the JAR. -->
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer
+                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                  <mainClass>my.programs.main.clazz</mainClass>
+                </transformer>
+              </transformers>
+            </configuration>
           </execution>
         </executions>
-      </plugin>
-
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.6.0</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>exec</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <executable>java</executable>
-          <includeProjectDependencies>true</includeProjectDependencies>
-          <includePluginDependencies>false</includePluginDependencies>
-          <classpathScope>compile</classpathScope>
-          <!--          <mainClass>cn.spark.study.App</mainClass>-->
-        </configuration>
       </plugin>
     </plugins>
   </build>
