@@ -38,7 +38,7 @@ object ReduceDemo {
   }
 
   //自定义reduce function
-  class MyReduce extends ReduceFunction[TemperatureSensor] {
+ private class MyReduce extends ReduceFunction[TemperatureSensor] {
     override def reduce(value1: TemperatureSensor, value2: TemperatureSensor): TemperatureSensor = {
       TemperatureSensor(value1.id, value1.timestamp.max(value2.timestamp), value1.name, value1.temperature.max(value2.temperature), value1.location)
     }
