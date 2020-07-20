@@ -10,13 +10,12 @@ import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011
 
 /**
- * 滚动窗口demo
- *
+ * 滑动窗口demo
  * @author di.zhang
- * @date 2020/7/18
- * @time 21:20
+ * @date 2020/7/20
+ * @time 23:58
  **/
-object TumblingWindowDemo {
+object SlidingWindowsDemo {
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     env.setParallelism(1)
@@ -30,7 +29,7 @@ object TumblingWindowDemo {
 
     val resultStream: DataStream[TemperatureSensor] = inputDataStream.map(new MyMapFunction)
       .keyBy(_.id)
-      .timeWindow(Time.seconds(15))
+      .timeWindow(Time.seconds(15), Time.seconds(5))
       .reduce(new MyReduceFunction)
 
 
@@ -64,7 +63,3 @@ object TumblingWindowDemo {
   }
 
 }
-
-
-
-
