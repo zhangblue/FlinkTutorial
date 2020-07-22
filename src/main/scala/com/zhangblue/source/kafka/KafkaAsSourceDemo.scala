@@ -16,10 +16,10 @@ object KafkaAsSourceDemo {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
 
     //2. 定义kafka作为source，计算，并显示结果
-    val topic = "my-flink-topic"
+    val topic = "my-topic"
     val valueDeserializationSchema: DeserializationSchema[String] = new SimpleStringSchema()
     val props: Properties = new Properties()
-    props.load(this.getClass.getClassLoader.getResourceAsStream("kafka/home-consumer.properties"))
+    props.load(this.getClass.getClassLoader.getResourceAsStream("kafka/local-consumer.properties"))
     val kafkaSource = env.addSource(new FlinkKafkaConsumer011[String](topic, valueDeserializationSchema, props))
 
     kafkaSource.filter(_.trim.nonEmpty).map(fun = linedata => {

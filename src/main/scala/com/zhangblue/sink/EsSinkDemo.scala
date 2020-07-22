@@ -1,7 +1,6 @@
 
 import java.util
 
-import com.alibaba.fastjson.{JSON, JSONObject}
 import com.zhangblue.entity.TemperatureSensor
 import org.apache.flink.api.common.functions.{MapFunction, RuntimeContext}
 import org.apache.flink.streaming.api.scala._
