@@ -1,6 +1,6 @@
+[TOC]
+
 # Flink Window
-
-
 
 ## 1. window类型
 
@@ -56,3 +56,109 @@
 - `.getSideOutput()` -- 获取侧输出流
 
 ### 2.4 Window API 概览
+
+
+
+# Watermark
+
+## 1. TimestampAssigner 时间分配器
+
+### 1.1 AssignerWithPunctuatedWatermarks
+
+- 没有时间规律，可以打断的生成watermark。
+
+- 当数据稀疏时使用较好，每条数据都产生一个watermark
+
+```scala
+package com.zhangblue.watermark
+
+import com.zhangblue.entity.TemperatureSensor
+import org.apache.flink.streaming.api.functions.AssignerWithPunctuatedWatermarks
+import org.apache.flink.streaming.api.watermark.Watermark
+
+/**
+ * 自定义连续生成watermark类， 此种类型的watermark分配器会每条数据都会产生一个watermark
+ */
+class MyAssignerWithPunctuatedWatermarks(lateness: Long) extends AssignerWithPunctuatedWatermarks[TemperatureSensor] {
+
+  //此方法每条数据都会调用， 并生成一个watermark
+  /**
+   *
+   * @param lastElement        当前的这条数据
+   * @param extractedTimestamp 从当前的这条数据中提取的时间戳
+   * @return
+   */
+  override def checkAndGetNextWatermark(lastElement: TemperatureSensor, extractedTimestamp: Long): Watermark = {
+    //此处可以根据消息的类型，判断是否生成watermark
+    if (lastElement.id == "sensor_1") {
+      new Watermark(extractedTimestamp - lateness)
+    } else {
+      null
+    }
+  }
+
+  /**
+   * 时间戳提取器
+   *
+   * @param element                  当前的这条数据
+   * @param previousElementTimestamp 上条数据的时间
+   * @return
+   */
+  override def extractTimestamp(element: TemperatureSensor, previousElementTimestamp: Long): Long = {
+    element.timestamp
+  }
+}
+```
+
+
+
+### 1.2 AssignerWithPeriodicWatermarks
+
+- 周期性的生成watermark， 系统会周期性的将watermark插入到流中
+- 默认周期是200毫秒，可以使用`env.getConfig.setAutoWatermarkInterval(100L)`方法进行设置
+- 升序和乱序的处理`BoundedOutOfOrdernessTimestampExtractor` ， 都是 属于周期性watermark
+
+- 当数据密集时使用较好， 不会每条数据都会产生一个watermark
+
+```scala
+package com.zhangblue.watermark
+
+import com.zhangblue.entity.TemperatureSensor
+import org.apache.flink.streaming.api.functions.AssignerWithPeriodicWatermarks
+import org.apache.flink.streaming.api.watermark.Watermark
+
+/**
+ * 自定义定期生成watermark 类, 此种类型的watermark分配器会每隔200毫秒生成一个watermark
+ */
+class MyAssignerWithPeriodicWatermarks(lateness: Long) extends AssignerWithPeriodicWatermarks[TemperatureSensor] {
+
+  //存放最大时间戳
+  var maxTimeStamp: Long = Long.MinValue + maxTimeStamp
+
+  /**
+   * 计算watermark， 次方法会每隔200毫秒触发一次， 生成一个watermark
+   *
+   * @return
+   */
+  override def getCurrentWatermark: Watermark = {
+    new Watermark(maxTimeStamp - lateness)
+  }
+
+  /**
+   * 数据时间戳提取器，次方法每条数据都会执行
+   *
+   * @param element                  当前的这条数据
+   * @param previousElementTimestamp 上条数据的时间
+   * @return
+   */
+  override def extractTimestamp(element: TemperatureSensor, previousElementTimestamp: Long): Long = {
+    //计算最大时间戳
+    maxTimeStamp = maxTimeStamp.max(element.timestamp)
+    //返回当前数据的时间戳
+    element.timestamp
+  }
+}
+```
+
+
+
