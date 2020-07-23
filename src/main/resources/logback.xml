@@ -39,11 +39,6 @@
     </encoder>
   </appender>
 
-  <!-- level属性：指定根logger的分配级别 -->
-  <root level="debug">
-    <!-- ref属性：指定根logger关联的appender -->
-    <appender-ref ref="STDOUT"></appender-ref>
-  </root>
   <logger name="demo4" level="INFO" additivity="false">
     <appender-ref ref="threshold_console"></appender-ref>
   </logger>

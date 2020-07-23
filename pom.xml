@@ -40,178 +40,123 @@
 
     <bahir-redis.version>1.0</bahir-redis.version>
 
-    <flink-jdbc.version>1.11.0</flink-jdbc.version>
+    <flink-jdbc.version>1.11.1</flink-jdbc.version>
 
-
-    <scope>compile</scope>
-
+    <scope-compile>compile</scope-compile>
 
   </properties>
 
 
   <dependencies>
 
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <version>4.13</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-api</artifactId>
-      <version>${slf4j.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>log4j</groupId>
-      <artifactId>log4j</artifactId>
-      <version>${log4j.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jcl-over-slf4j</artifactId>
-      <version>${slf4j.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>${logback.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-core</artifactId>
-      <version>${logback.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-access</artifactId>
-      <version>${logback.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-
-
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-      <version>${mysql-jdbc.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-
-
-
-
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-compiler</artifactId>
-      <version>${scala.detail.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scalap</artifactId>
-      <version>${scala.detail.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-library</artifactId>
-      <version>${scala.detail.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.scala-lang</groupId>
-      <artifactId>scala-reflect</artifactId>
-      <version>${scala.detail.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-
+    <!--flink 核心依赖开始-->
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-core</artifactId>
       <version>${flink.version}</version>
-      <scope>${scope}</scope>
+      <scope>${scope-compile}</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-scala_${scala.version}</artifactId>
       <version>${flink.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-streaming-scala_${scala.version}</artifactId>
-      <version>${flink.version}</version>
-      <scope>${scope}</scope>
+      <scope>${scope-compile}</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-clients_${scala.version}</artifactId>
       <version>${flink.version}</version>
-      <scope>${scope}</scope>
+      <scope>${scope-compile}</scope>
     </dependency>
 
-    <!--引入kafka读取-->
     <dependency>
       <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-kafka-0.11_${scala.version}</artifactId>
+      <artifactId>flink-streaming-scala_${scala.version}</artifactId>
       <version>${flink.version}</version>
-      <scope>${scope}</scope>
+      <scope>${scope-compile}</scope>
+    </dependency>
+    <!--flink 核心依赖结束-->
+
+    <!--flink redis connector 开始-->
+    <dependency>
+      <groupId>org.apache.bahir</groupId>
+      <artifactId>flink-connector-redis_${scala.version}</artifactId>
+      <version>${bahir-redis.version}</version>
+      <scope>${scope-compile}</scope>
+    </dependency>
+    <!--flink redis connector 结束-->
+
+    <!--flink jdbc connecter 开始-->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-jdbc_${scala.version}</artifactId>
+      <version>${flink-jdbc.version}</version>
+      <scope>${scope-compile}</scope>
+    </dependency>
+
+    <dependency>
+      <groupId>org.postgresql</groupId>
+      <artifactId>postgresql</artifactId>
+      <version>${postgresql-jdbc.version}</version>
+      <scope>${scope-compile}</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-jdbc_${scala.version}</artifactId>
       <version>${flink.version}</version>
-      <scope>${scope}</scope>
+      <scope>${scope-compile}</scope>
     </dependency>
-
 
     <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-cep-scala_${scala.version}</artifactId>
-      <version>${flink.version}</version>
-      <scope>${scope}</scope>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>${mysql-jdbc.version}</version>
+      <scope>${scope-compile}</scope>
     </dependency>
+    <!--flink jdbc connecter 结束-->
 
+    <!--flink kafka source/sink 依赖开始-->
+    <dependency>
+      <groupId>org.apache.flink</groupId>
+      <artifactId>flink-connector-kafka-0.11_${scala.version}</artifactId>
+      <version>${flink.version}</version>
+      <scope>${scope-compile}</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>log4j</groupId>
+          <artifactId>log4j</artifactId>
+        </exclusion>
+        <exclusion>
+          <groupId>org.slf4j</groupId>
+          <artifactId>slf4j-log4j12</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
+    <!--flink kafka source/sink 依赖结束-->
+
+    <!--flink sink to elasticsearch 依赖开始-->
     <dependency>
       <groupId>org.apache.flink</groupId>
       <artifactId>flink-connector-elasticsearch6_${scala.version}</artifactId>
       <version>${flink.version}</version>
-      <scope>${scala.version}</scope>
+      <scope>${scope-compile}</scope>
     </dependency>
 
     <dependency>
       <groupId>org.elasticsearch</groupId>
       <artifactId>elasticsearch</artifactId>
       <version>${es.version}</version>
-      <scope>${scope}</scope>
+      <scope>${scope-compile}</scope>
     </dependency>
 
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>transport</artifactId>
       <version>${es.version}</version>
-      <scope>${scope}</scope>
+      <scope>${scope-compile}</scope>
       <exclusions>
         <exclusion>
           <groupId>org.elasticsearch</groupId>
@@ -227,80 +172,95 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <!--flink sink to elasticsearch 依赖结束-->
 
-     <!--flink redis connector-->
+    <!--logback 日志依赖开始-->
     <dependency>
-      <groupId>org.apache.bahir</groupId>
-      <artifactId>flink-connector-redis_${scala.version}</artifactId>
-      <version>${bahir-redis.version}</version>
-      <scope>${scope}</scope>
-    </dependency>
-
-    <!--flink jdbc connecter-->
-    <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-jdbc_${scala.version}</artifactId>
-      <version>${flink-jdbc.version}</version>
-      <scope>${scope}</scope>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-core</artifactId>
+      <version>${logback.version}</version>
+      <scope>${scope-compile}</scope>
     </dependency>
 
     <dependency>
-      <groupId>org.postgresql</groupId>
-      <artifactId>postgresql</artifactId>
-      <version>${postgresql-jdbc.version}</version>
-      <scope>${scope}</scope>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-access</artifactId>
+      <version>${logback.version}</version>
+      <scope>${scope-compile}</scope>
     </dependency>
 
-    <!--flink elasticsearch -->
     <dependency>
-      <groupId>org.apache.flink</groupId>
-      <artifactId>flink-connector-elasticsearch6_${scala.version}</artifactId>
-      <version>${flink.version}</version>
-      <scope>${scope}</scope>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback.version}</version>
+      <scope>${scope-compile}</scope>
     </dependency>
+    <!--logback 日志依赖结束-->
 
 
   </dependencies>
 
   <build>
+    <sourceDirectory>src/main/scala</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <includes>
+          <include>*.*</include>
+        </includes>
+      </resource>
+    </resources>
+
     <plugins>
       <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
+        <executions>
+          <execution>
+            <id>scala-compile</id>
+            <goals>
+              <goal>compile</goal>
+            </goals>
+            <configuration>
+              <!--includes是一个数组，包含要编译的code-->
+              <includes>
+                <include>**/*.scala</include>
+              </includes>
+            </configuration>
+          </execution>
+          <execution>
+            <id>scala-test-compile</id>
+            <goals>
+              <goal>testCompile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <scalaVersion>${scala.detail.version}</scalaVersion>
+        </configuration>
+      </plugin>
+
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-shade-plugin</artifactId>
-        <version>3.2.1</version>
+        <artifactId>maven-assembly-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+          <archive>
+            <manifest>
+              <mainClass>com.zhangblue.test.SourceFromKafkaSinkToDb</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
         <executions>
           <execution>
             <phase>package</phase>
             <goals>
-              <goal>shade</goal>
+              <goal>single</goal>
             </goals>
-            <configuration>
-              <artifactSet>
-                <excludes>
-                  <exclude>com.google.code.findbugs:jsr305</exclude>
-                  <exclude>org.slf4j:*</exclude>
-                  <exclude>log4j:*</exclude>
-                </excludes>
-              </artifactSet>
-              <filters>
-                <filter>
-                  <!-- Do not copy the signatures in the META-INF folder.
-                  Otherwise, this might cause SecurityExceptions when using the JAR. -->
-                  <artifact>*:*</artifact>
-                  <excludes>
-                    <exclude>META-INF/*.SF</exclude>
-                    <exclude>META-INF/*.DSA</exclude>
-                    <exclude>META-INF/*.RSA</exclude>
-                  </excludes>
-                </filter>
-              </filters>
-              <transformers>
-                <transformer
-                  implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                  <mainClass>my.programs.main.clazz</mainClass>
-                </transformer>
-              </transformers>
-            </configuration>
           </execution>
         </executions>
       </plugin>

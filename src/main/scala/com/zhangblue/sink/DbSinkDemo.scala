@@ -3,6 +3,7 @@ package com.zhangblue.sink
 import java.sql.PreparedStatement
 
 import com.zhangblue.entity.TemperatureSensor
+import com.zhangblue.function.MyMapFunction
 import org.apache.flink.api.common.functions.MapFunction
 import org.apache.flink.connector.jdbc.{JdbcConnectionOptions, JdbcSink, JdbcStatementBuilder}
 import org.apache.flink.streaming.api.scala._
@@ -27,13 +28,6 @@ object DbSinkDemo {
     dataStream.addSink(JdbcSink.sink("insert into temperature_sensor (id,timestamp,name,temperature,location) values (?,?,?,?,?)", new MyJdbcStatementBuilder, jdbcConnectionOptions))
 
     env.execute("sink to db demo")
-  }
-
-  private class MyMapFunction extends MapFunction[String, TemperatureSensor] {
-    override def map(value: String): TemperatureSensor = {
-      val splitData = value.split(",")
-      TemperatureSensor(splitData(0), splitData(1).toLong, splitData(2), splitData(3).toDouble, splitData(4))
-    }
   }
 
   private class MyJdbcStatementBuilder extends JdbcStatementBuilder[TemperatureSensor] {
