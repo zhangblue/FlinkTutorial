@@ -3,6 +3,7 @@ package com.zhangblue.window
 import java.util.Properties
 
 import com.zhangblue.entity.TemperatureSensor
+import com.zhangblue.function.MyMapFunction
 import org.apache.flink.api.common.functions.{MapFunction, ReduceFunction}
 import org.apache.flink.api.common.serialization.{DeserializationSchema, SimpleStringSchema}
 import org.apache.flink.streaming.api.scala._
@@ -45,21 +46,6 @@ object TumblingWindowDemo {
   private class MyReduceFunction extends ReduceFunction[TemperatureSensor] {
     override def reduce(value1: TemperatureSensor, value2: TemperatureSensor): TemperatureSensor = {
       TemperatureSensor(value1.id, value1.timestamp.max(value2.timestamp), value1.name, value1.temperature.max(value2.temperature), value1.location)
-    }
-  }
-
-  /**
-   * 将kakfa中读出的字符串转换成TemperatureSensor对象
-   */
-  private class MyMapFunction extends MapFunction[String, TemperatureSensor] {
-    override def map(value: String): TemperatureSensor = {
-      val arr = value.split(",")
-      val id = arr(0).trim
-      val timestamp = arr(1).trim.toLong
-      val name = arr(2).trim
-      val temperature = arr(3).trim.toDouble
-      val location = arr(4).trim
-      TemperatureSensor(id, timestamp, name, temperature, location)
     }
   }
 

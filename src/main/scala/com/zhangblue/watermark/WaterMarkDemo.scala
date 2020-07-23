@@ -1,26 +1,31 @@
-package com.zhangblue.window
+package com.zhangblue.watermark
 
 import java.util.Properties
 
 import com.zhangblue.entity.TemperatureSensor
 import com.zhangblue.function.MyMapFunction
-import org.apache.flink.api.common.functions.{MapFunction, ReduceFunction}
+import com.zhangblue.window.SlidingWindowsDemo.MyReduceFunction
+import org.apache.flink.api.common.functions.ReduceFunction
 import org.apache.flink.api.common.serialization.{DeserializationSchema, SimpleStringSchema}
+import org.apache.flink.streaming.api.TimeCharacteristic
+import org.apache.flink.streaming.api.functions.timestamps.BoundedOutOfOrdernessTimestampExtractor
 import org.apache.flink.streaming.api.scala._
 import org.apache.flink.streaming.api.windowing.time.Time
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011
 
 /**
- * 滑动窗口demo
+ * 设置watermark
  *
  * @author di.zhang
- * @date 2020/7/20
- * @time 23:58
+ * @date 2020/7/23
+ * @time 19:28
  **/
-object SlidingWindowsDemo {
+object WaterMarkDemo {
+
   def main(args: Array[String]): Unit = {
     val env = StreamExecutionEnvironment.getExecutionEnvironment
     env.setParallelism(1)
+    env.setStreamTimeCharacteristic(TimeCharacteristic.EventTime) //设置使用事件时间作为时间衡量标准
 
     val topic = "my-topic"
     val valueDeserializationSchema: DeserializationSchema[String] = new SimpleStringSchema()
@@ -30,6 +35,9 @@ object SlidingWindowsDemo {
     val inputDataStream: DataStream[String] = env.addSource(new FlinkKafkaConsumer011[String](topic, valueDeserializationSchema, props)).filter(_.nonEmpty)
 
     val resultStream: DataStream[TemperatureSensor] = inputDataStream.map(new MyMapFunction)
+      .assignTimestampsAndWatermarks(new BoundedOutOfOrdernessTimestampExtractor[TemperatureSensor](Time.seconds(5)) {
+        override def extractTimestamp(element: TemperatureSensor): Long = element.timestamp
+      })
       .keyBy(_.id)
       .timeWindow(Time.seconds(15), Time.seconds(5))
       .reduce(new MyReduceFunction)
