@@ -36,7 +36,7 @@
     <!--scala 详细版本-->
     <scala.detail.version>2.11.12</scala.detail.version>
 
-    <es.version>6.5.3</es.version>
+    <es.version>6.8.17</es.version>
 
     <bahir-redis.version>1.0</bahir-redis.version>
 
