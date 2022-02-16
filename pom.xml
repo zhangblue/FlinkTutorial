@@ -29,7 +29,7 @@
     <!-- mysql driver-->
     <mysql-jdbc.version>8.0.20</mysql-jdbc.version>
     <!--postgresql driver-->
-    <postgresql-jdbc.version>42.1.4</postgresql-jdbc.version>
+    <postgresql-jdbc.version>42.3.3</postgresql-jdbc.version>
 
     <!--bigdata-->
     <scala.version>2.11</scala.version>
